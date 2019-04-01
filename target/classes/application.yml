@@ -1,0 +1,26 @@
+server:
+  port: 8080 #表示定义单点登录端口
+  servlet:
+    context-path: /  #该配置可以删除,默认配置就是" / "
+spring:
+  datasource:
+    #引入druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/jtdb?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+    username: root
+    password: root
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+
+#配置mybatis-plus
+mybatis-plus:
+  type-aliases-package: com.jt.sso.pojo
+  mapper-locations: classpath:/mybatis/mappers/*.xml
+  #开启驼峰映射
+  configuration:
+   map-underscore-to-camel-case: true
+  
+  
