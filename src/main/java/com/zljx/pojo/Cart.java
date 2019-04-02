@@ -1,15 +1,15 @@
 package com.zljx.pojo;
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Cart {
-    @Id
     private Long id;
-    private String cart_name;
-    private String cart_type;
-    private Integer cart_size;
+    private String cartName;
+    private String cartType;
+    private Integer cartSize;
     private String picture;
     private Date created;
     private Date updated;
@@ -20,5 +20,53 @@ public class Cart {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCartName() {
+        return cartName;
+    }
+
+    public void setCartName(String cartName) {
+        this.cartName = cartName;
+    }
+
+    public String getCartType() {
+        return cartType;
+    }
+
+    public void setCartType(String cartType) {
+        this.cartType = cartType;
+    }
+
+    public Integer getCartSize() {
+        return cartSize;
+    }
+
+    public void setCartSize(Integer cartSize) {
+        this.cartSize = cartSize;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 }

@@ -20,8 +20,13 @@ public class PageController {
     }
 
     @RequestMapping("/doCartManage")
-    public String dodoCartManage(){
+    public String doCartManage(){
         return "managePage/cartManage";
+    }
+
+    @RequestMapping("/doCartAdd")
+    public String doCartAdd(){
+        return "managePage/cartAdd";
     }
 
 }
