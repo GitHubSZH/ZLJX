@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+<script src="../js/jquery.js"></script>
 <link rel="stylesheet" href="../layui/css/layui.css">
 <script src="../layui/layui.js"></script>
 <link rel="stylesheet" type="text/css" href="../login/css/component.css" />
@@ -44,7 +44,6 @@
 
         //登录的点击事件
         $("#sub").on("click",function(){
-
             login();
         })
 
@@ -59,15 +58,15 @@
             var username = $(" input[ name='username' ] ").val();
             var password = $(" input[ name='password' ] ").val();
             $.ajax({
-                url:"doLogin.do",
+                url:"/doLogin",
                 data:{"username":username,"password":password},
                 type:"post",
                 dataType:"json",
                 success:function(data){
-                    if(data.state==200){
-                        location.href=""
+                    if(data.status==200){
+                        location.href="/manage/main"
                     }else{
-                        alert(data.message)
+                        alert(data.msg);
                     }
                 }
             })

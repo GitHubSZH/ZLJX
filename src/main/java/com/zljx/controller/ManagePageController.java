@@ -4,17 +4,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-//@RequestMapping("/manage")
-public class PageController {
+@RequestMapping("/manage")
+public class ManagePageController {
 
     /**后台登录页面*/
-    @RequestMapping("/login")
+ /*   @RequestMapping("/login")
     public String doLogin(){
         return "managePage/login";
-    }
+    }*/
 
     /**登录后的页面*/
-   /* @RequestMapping("/main")
+    @RequestMapping("/main")
     public String doMain(){
         return "managePage/manageMain";
     }
@@ -27,6 +27,6 @@ public class PageController {
     @RequestMapping("/doCartAdd")
     public String doCartAdd(){
         return "managePage/cartAdd";
-    }*/
+    }
 
 }

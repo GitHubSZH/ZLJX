@@ -64,8 +64,6 @@
             margin: 10px;
         }
     </style>
-    <script src="../js/jquery.js"></script>
-    <script src="../layui/layui.js"></script>
 <body class="layui-layout-body">
 <form class="layui-form" method="post" id="add_form">
     <div class="layui-form-item">
@@ -112,6 +110,11 @@
                     </button>
                     <button type="button" class="layui-btn" id="test9">开始上传</button>
                     <button type="button" class="layui-btn" id="cleanImgs"> <i class="fa fa-trash-o fa-lg"></i>清空图片预览</button>
+                <!--<form id="f1" method="post" enctype="multipart/form-data">
+                    <input type="file" name="files" multiple="multiple">
+                    <input type="button" id="submit" value="上传" name="上传"></input>
+                </form>-->
+                    <input type="hidden" id="hiddenIput">
                 </div>
                 <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                     预览图：
@@ -135,17 +138,22 @@
 
 <script type="text/javascript">
     $(function(){
-    /*    $(".layui-form-item").click(function(){
-            var val=$('input:radio[id="经典披萨"]:checked').val();
-            if(val=='经典披萨'){
-                $("#chicun").css("display","block")
-                $("#pisa").css("display","block")
-            }else{
-                $("#chicun").css("display","none")
-                $("#pisa").css("display","none")
-                $('input:radio[name=1]').attr('checked',false);
-                $('input:radio[name=six]').attr('checked',false);
-            }
+       /* var formData = new FormData($("#f1")[0]);
+        console.log(formData);
+        $("#submit").on("click",function () {
+            $.ajax({
+                url:"/upload",//后台的接口地址
+                type:"post",//post请求方式
+                data:formData,//参数
+                cache: false,
+                processData: false,
+                contentType: false,
+                success:function (data) {
+                    alert(data);
+                },error:function () {
+                    alert("操作失败~");
+                }
+            })
         })*/
 
         $("#p_add").click(function(){
@@ -229,8 +237,8 @@
                 size:10240,
 //			最多上传的数量
                 number:20,
-//			MultipartFile file 对应，layui默认就是file,要改动则相应改动
-                field:'file',
+			//MultipartFile:file, //对应，layui默认就是file,要改动则相应改动
+                field:'files',
                 bindAction: '#test9',
                 before: function(obj) {
                     //预读本地文件示例，不支持ie8
@@ -242,7 +250,8 @@
                 },
                 done: function(res, index, upload) {
                     //每个图片上传结束的回调，成功的话，就把新图片的名字保存起来，作为数据提交
-                    console.log(res.code);
+                    console.log(res.data);
+                    $("#hiddenIput").append(res.data);
                     if(res.code=="1"){
                         fail++;
                     }else{

@@ -52,7 +52,7 @@
         var tableIns =  table.render({
             elem: '#demo'
             ,toolbar: '#toolbarDemo'
-            ,url:'manage/findCartAll'
+            ,url:'/manage/findCartAll'
             ,title: '商品数据表'
             ,limit:5//要传向后台的每页显示条数
             //,page:true(自带的这个要注掉)
@@ -178,7 +178,7 @@
                         layer.msg("请取消复选框的选择");
                         return;
                     }
-                    $(".layui-body").load("doCartAdd");
+                    $(".layui-body").load("/manage/doCartAdd");
                     break;
             };
         });
