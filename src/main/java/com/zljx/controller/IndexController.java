@@ -1,6 +1,7 @@
 package com.zljx.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,5 +19,9 @@ public class IndexController {
     @ResponseBody
     public String index02(){
         return "hello";
+    }
+    @RequestMapping("tz/{page}")
+    public String tiaozhuan(@PathVariable String page){
+        return page;
     }
 }

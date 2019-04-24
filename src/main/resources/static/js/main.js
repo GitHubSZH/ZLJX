@@ -190,7 +190,20 @@ $(function (){
 
 function dianji(clas,url){
     $(clas).click(function () {
-        $(".zhuti").load("tz/"+url);
+        $(".zhuti").load("tz/"+url,function () {
+            if(url=="about"){
+                dofindCartAll()
+            }
+            if(url=="work"){
+                dofindWork()
+            }
+            if(url=="join"){
+                dofindJoin()
+            }
+        });
     });
+}
+function dofindCartAll(){
+
 }
 

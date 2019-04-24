@@ -87,11 +87,11 @@
     function snum0(){
         //var self = this;
         if(num0 <= 30){
-            document.img_2.src ="img/animation_2/content_2-" +num0+ ".jpg";
+         /*   document.img_2.src ="img/animation_2/content_2-" +num0+ ".jpg";*/
             num0++;
         }else{
             num0 = 1;
-            document.img_2.src ="img/animation_2/content_2-" +num0+ ".jpg";
+           /* document.img_2.src ="img/animation_2/content_2-" +num0+ ".jpg";*/
         }
     }
     var num1 = 1;
@@ -99,13 +99,13 @@
     function snum1(){
         //var self = this;
         if(num1 <= 2){
-            document.img_3.src ="img/animation_3/" +num1+ ".png";
-            document.img_5.src ="img/animation_5/" +num1+ ".png";
+            /*document.img_3.src ="img/animation_3/" +num1+ ".png";*/
+            /*document.img_5.src ="img/animation_5/" +num1+ ".png";*/
             num1++;
         }else{
             num1 = 1;
-            document.img_3.src ="img/animation_3/" +num1+ ".png";
-            document.img_5.src ="img/animation_5/" +num1+ ".png";
+         /*   document.img_3.src ="img/animation_3/" +num1+ ".png";*/
+          /*  document.img_5.src ="img/animation_5/" +num1+ ".png";*/
         }
     }
     //http://oh2n0fb4m.bkt.clouddn.com/img/animation_2/content_2-27.png
@@ -115,11 +115,11 @@
     function snum2(){
         //var self = this;
         if(num2 <= 6){
-            document.img_4.src ="img/animation_4/" +num2+ ".png";
+            /*document.img_4.src ="img/animation_4/" +num2+ ".png";*/
             num2++;
         }else{
             num2 = 1;
-            document.img_4.src ="img/animation_4/" +num2+ ".png";
+            /*document.img_4.src ="img/animation_4/" +num2+ ".png";*/
         }
     }
 
@@ -178,4 +178,28 @@
 var download = function(){
     window.location.href="../WEB-INF/view/download.html";
 };
+$(function (){
+    dianji(".glyphicon-list","about");
+    dianji(".glyphicon-fire","work");
+    dianji(".glyphicon-question-sign","join");
+    $(".daohang").click(function () {
+        $(".daohang").attr("class","daohang")
+        $(this).attr("class","daohang active")
+    })
+})
+
+function dianji(clas,url){
+    $(clas).click(function () {
+        $(".zhuti").load("tz/"+url,function () {
+            if(url=="about"){
+                alert(11)
+            } if(url=="work"){
+                alert(22)
+            } if(url=="join"){
+                alert(33)
+            }
+        });
+    });
+}
+
 

@@ -9,3 +9,8 @@
     for(i in document.images)
         document.images[i].ondragstart=imgdragstart;
 }();
+function findCartByType(){
+    $.get(url,params,function (obj) {
+
+    })
+}
