@@ -1,13 +1,14 @@
 package com.zljx.controller;
 
+import com.qiniu.common.QiniuException;
 import com.zljx.vo.HttpClientService;
 import com.zljx.vo.PicUploadResult;
+import com.zljx.vo.QiniuCloudUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -45,7 +46,14 @@ public class FileController {
 
    @RequestMapping("/upload")
     public PicUploadResult upload(@RequestParam("files") MultipartFile file, HttpSession session){
+       System.out.println(file);
        PicUploadResult result = new PicUploadResult();
+
+       if(StringUtils.isEmpty(file)){
+           result.setCode(1);
+           result.setMsg("请先选择需要上传的图片");
+           return result;
+       }
        //1.获取图片名称
 
 
@@ -68,24 +76,25 @@ public class FileController {
                    result.setCode(1);
                    return result;
                }
-        /*   System.out.println("H"+height);
-           System.out.println("w"+width);*/
-               //4.以当前时间创建文件夹，并且判断文件夹是否存在
-               String dateFormat = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-               File dateFile = new File(dirPath+dateFormat);
-               if(!dateFile.exists()){
-                   dateFile.mkdirs();
+               byte[] bytes = file.getBytes();
+               String imageName  = UUID.randomUUID().toString().replace("-","");
+               QiniuCloudUtil qiniuUtil = new QiniuCloudUtil();
+               try {
+                   //使用base64方式上传到七牛云
+                   String url = qiniuUtil.put64image(bytes, imageName);
+                   result.setCode(0);
+                   result.setMsg("文件上传成功");
+                   //去除后面的"?号" http://psmddsfe1.bkt.clouddn.com/05f706c7d54d4bb18b8bdef8c5de0ccc?imageView2/0/q/75|imageslim
+                   int i = url.lastIndexOf("?");
+                   String newUrl = url.substring(0, i);
+                   result.setData("http://"+newUrl);
+                   return result;
+               } catch (Exception e) {
+                   e.printStackTrace();
+                   result.setCode(1);
+                   result.setMsg("文件上传失败");
+                   return result;
                }
-               //5.使用UUID使得图片文件名不一致，把UUID当做前缀，截取文件后缀就是.jps
-               String prefix = UUID.randomUUID().toString().replace("-","");
-               String suffix = filename.substring(filename.lastIndexOf("."));
-               String newPath = prefix+suffix;
-               //6.实现文件上传
-               file.transferTo(new File(dirPath+dateFormat+"/"+newPath));
-               System.out.println("上传成功");
-               //7.返回数据
-               result.setData(urlPath+dateFormat+"/"+newPath);
-               return result;
            }catch (IOException e){
                result.setCode(1);
                e.printStackTrace();
@@ -93,5 +102,27 @@ public class FileController {
            }
 
 
+    }
+    @RequestMapping("/manage/delete")
+    public PicUploadResult deletePic(@RequestParam("pickey") String pickey){
+        PicUploadResult result = new PicUploadResult();
+        QiniuCloudUtil qiniuUtil = new QiniuCloudUtil();
+        try {
+            //七牛云 删除图片
+            qiniuUtil.delete(pickey);
+            result.setCode(0);
+            result.setMsg("移除图片成功");
+            return result;
+        } catch (QiniuException e) {
+            e.printStackTrace();
+            result.setCode(1);
+            result.setMsg("该图片已经不存在了！");
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setCode(1);
+            result.setMsg("移除图片失败");
+            return result;
+        }
     }
 }

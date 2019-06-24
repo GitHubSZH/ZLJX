@@ -1,16 +1,27 @@
 package com.zljx.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexController {
-    @RequestMapping("index")
+    @RequestMapping("/page/{html}")
+    public String page(@PathVariable("html") String html){
+        return html;
+    }
+
+    @RequestMapping("/index")
     public String index(){
         return "index";
     }
-    @RequestMapping("Test01")
+
+    @RequestMapping("/about")
+    public String about(){
+        return "about";
+    }
+   /* @RequestMapping("Test01")
     public String index01(){
         return "join";
     }
@@ -19,4 +30,11 @@ public class IndexController {
     public String index02(){
         return "hello";
     }
+
+    @RequestMapping("image")
+    public String image(){
+        return "iamge";
+    }*/
+
+
 }

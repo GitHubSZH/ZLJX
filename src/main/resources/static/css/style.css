@@ -72,7 +72,8 @@ body{
 }
 /*滑窗*/
 #myCarousel {
-    margin-top: 50px;
+    /*margin-top: 50px;*/
+    /*height: 440px;*/
 }
 .carousel-inner img{
     margin: 0 auto;

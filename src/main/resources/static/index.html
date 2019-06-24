@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+./img/slide1.jpg<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -59,12 +59,12 @@
     <div class="carousel-inner">
         <div class="item active" style="background: #383838">
             <a href="work/work.html">
-                <img src="./img/slide1.jpg" alt="First slide">
+                <img src="./img/slide2.jpg" width="960px" height="240px" alt="First slide">
             </a>
         </div>
         <div class="item" style="background: #7277bb">
             <a href="join/join.html">
-                <img src="./img/slide2.jpg" alt="Second slide">
+                <img src="./img/slide2.jpg" width="960px" height="240px" alt="Second slide">
             </a>
         </div>
         <div class="item" style="background: #fbe8c5">
@@ -244,6 +244,27 @@
 <script src="./js/jquery.js"></script>
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/main.js"></script>
+<script>
+    /**
+     *
+     * 获取url上的参数
+     *  variable: 参数的名称名
+     */
+        function getQueryVariable(variable)
+        {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
+            }
+            return(false);
+        }
+    $(function () {
+        var queryVariable = getQueryVariable("imageId");
+        alert(queryVariable);
+    })
+</script>
 
 </body>
 </html>

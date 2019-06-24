@@ -1,5 +1,6 @@
 package com.zljx.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
@@ -10,8 +11,11 @@ public class Cart {
     private String cartName;
     private String cartType;
     private Integer cartSize;
-    private String picture;
+        private String picture;
+    private String cartDesc;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone ="GMT+8" )
     private Date created;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone ="GMT+8" )
     private Date updated;
 
     public Long getId() {
@@ -54,6 +58,14 @@ public class Cart {
         this.picture = picture;
     }
 
+    public String getCartDesc() {
+        return cartDesc;
+    }
+
+    public void setCartDesc(String cartDesc) {
+        this.cartDesc = cartDesc;
+    }
+
     public Date getCreated() {
         return created;
     }
@@ -68,5 +80,19 @@ public class Cart {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", cartName='" + cartName + '\'' +
+                ", cartType='" + cartType + '\'' +
+                ", cartSize=" + cartSize +
+                ", picture='" + picture + '\'' +
+                ", cartDesc='" + cartDesc + '\'' +
+                ", created=" + created +
+                ", updated=" + updated +
+                '}';
     }
 }

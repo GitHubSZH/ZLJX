@@ -29,4 +29,8 @@ public class ManagePageController {
         return "managePage/cartAdd";
     }
 
+    @RequestMapping("/doUpdateCart")
+    public String doUpdateCart(){
+        return "managePage/cartUpdate";
+    }
 }
