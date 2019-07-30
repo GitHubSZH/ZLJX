@@ -2,6 +2,7 @@ package com.zljx.service;
 
 import com.zljx.pojo.Admin;
 import com.zljx.pojo.Cart;
+import com.zljx.pojo.Work;
 import com.zljx.vo.SysResultLay;
 
 import java.util.List;
@@ -19,4 +20,14 @@ public interface ManageService {
     Cart findCartOne(Long id);
 
     SysResultLay UpdateCart(Cart cart);
+
+    List<Work> findWorkLike(int page, int limit, String pName);
+
+    Work findWorkOne(Long id);
+
+    SysResultLay addWork(Work work);
+
+    SysResultLay UpdateWork(Work work);
+
+    int deletWorks(Integer[] ids);
 }

@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.zljx.constant.Status;
 import com.zljx.mapper.CartMapperMange;
+import com.zljx.mapper.WorkMapperManage;
 import com.zljx.pojo.Admin;
 import com.zljx.pojo.Cart;
+import com.zljx.pojo.Work;
 import com.zljx.service.ManageService;
-import com.zljx.vo.HttpClientService;
-import com.zljx.vo.ObjectMapperUtil;
-import com.zljx.vo.SysResult;
 import com.zljx.vo.SysResultLay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +19,12 @@ import java.util.*;
 @Service
 public class ManageServiceImpl implements ManageService {
 
-    @Autowired
-    private HttpClientService httpClientService;
 
     @Autowired
     private CartMapperMange cartMapper;
+
+    @Autowired
+    private WorkMapperManage workMapper;
 
 
     @Override
@@ -35,13 +35,14 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public Admin doLogin(Admin admin) {
-        String url = "http://localhost:8081/login/doLogin";
+     /*   String url = "http://localhost:8081/login/doLogin";
         Map<String,String> params = new HashMap<>();
         params.put("username",admin.getUsername());
         params.put("password",admin.getPassword());
         String json = httpClientService.doPost(url, params);
         SysResult result = ObjectMapperUtil.toObejct(json, SysResult.class);
-        return (Admin) result.getData();
+        return (Admin) result.getData();*/
+     return null;
     }
 
     @Override
@@ -109,5 +110,75 @@ public class ManageServiceImpl implements ManageService {
         }
         cartMapper.updateById(cart);
         return SysResultLay.msg("修改吊车信息成功！");
+    }
+
+
+    /** 合作的后台查询所有 */
+    @Override
+    public List<Work> findWorkLike(int page, int limit, String pName) {
+        PageHelper.startPage(page,limit);
+        return workMapper.findWorkLike(pName);
+    }
+
+    /**
+     * @describe   合作的后台查询单条信息
+     * @params [id]
+     * @return com.zljx.pojo.Work
+     */
+    @Override
+    public Work findWorkOne(Long id) {
+        QueryWrapper<Work> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",id);
+        return workMapper.selectOne(queryWrapper);
+    }
+
+    /**
+     * @describe   添加合作信息
+     * @params [work]
+     * @return com.zljx.vo.SysResultLay
+     */
+    @Override
+    public SysResultLay addWork(Work work) {
+        if(StringUtils.isEmpty(work.getWorkName())){
+            return  SysResultLay.build(Status.PARAMETER_EXCEPTION,"添加合作名称不能为空！");
+        }
+        if(StringUtils.isEmpty(work.getWorkAddr())){
+            return  SysResultLay.build(Status.PARAMETER_EXCEPTION,"添加合作地址不能为空！");
+        }
+        if(StringUtils.isEmpty(work.getWorkDesc())){
+            return  SysResultLay.build(Status.PARAMETER_EXCEPTION,"添加合作描述不能为空！");
+        }
+        workMapper.insertWork(work);
+        return SysResultLay.msg("添加合作信息成功！");
+    }
+
+    /**
+     * @describe  添加吊车信息
+     * @params [work]
+     * @return com.zljx.vo.SysResultLay
+     */
+    @Override
+    public SysResultLay UpdateWork(Work work) {
+        if(StringUtils.isEmpty(work.getWorkName())){
+            return  SysResultLay.build(Status.PARAMETER_EXCEPTION,"修改合作名称不能为空！");
+        }
+        if(StringUtils.isEmpty(work.getWorkAddr())){
+            return  SysResultLay.build(Status.PARAMETER_EXCEPTION,"修改合作地址不能为空！");
+        }
+        if(StringUtils.isEmpty(work.getWorkDesc())){
+            return  SysResultLay.build(Status.PARAMETER_EXCEPTION,"修改合作描述不能为空！");
+        }
+        workMapper.updateById(work);
+        return SysResultLay.msg("修改合作信息成功！");
+    }
+
+    /**
+     * @describe 批量删除合作信息
+     * @params [ids]
+     * @return int
+     */
+    @Override
+    public int deletWorks(Integer[] ids) {
+        return workMapper.deleteBatchIds(Arrays.asList(ids));
     }
 }

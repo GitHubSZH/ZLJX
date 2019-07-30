@@ -5,15 +5,22 @@
 <mapper namespace="com.zljx.mapper.CartMapperWeb">
 
  <select id="selectListLimt" resultType="com.zljx.pojo.Cart">
-     select * from cart where cart_type=#{type}
+     select `id`, `cart_type`, `cart_size`, `picture`, `created`, `updated`, `cart_name`, `cart_desc` from cart where cart_type=#{type}
  </select>
 
  <select id="webPre" resultType="com.zljx.pojo.Cart">
-     select * from cart where id &lt;#{id} and cart_type=#{type} GROUP BY id DESC LIMIT 1
+     select `id`, `cart_type`, `cart_size`, `picture`, `created`, `updated`, `cart_name`, `cart_desc` from cart where id &lt;#{id} and cart_type=#{type} GROUP BY id DESC LIMIT 1
  </select>
 
     <select id="webNext" resultType="com.zljx.pojo.Cart">
-     select * from cart where id &gt;#{id} and cart_type=#{type} GROUP BY id ASC LIMIT 1
+     select `id`, `cart_type`, `cart_size`, `picture`, `created`, `updated`, `cart_name`, `cart_desc` from cart where id &gt;#{id} and cart_type=#{type} GROUP BY id ASC LIMIT 1
  </select>
+
+
+    <select id="selectWorkListLimt" resultType="com.zljx.pojo.Work">
+     select `id`, `work_name`, `work_addr`, `picture`, `work_desc`, `created`, `updated` from work
+ </select>
+
+
 
 </mapper>

@@ -1,17 +1,12 @@
 package com.zljx.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/manage")
 public class ManagePageController {
-
-    /**后台登录页面*/
- /*   @RequestMapping("/login")
-    public String doLogin(){
-        return "managePage/login";
-    }*/
 
     /**登录后的页面*/
     @RequestMapping("/main")
@@ -32,5 +27,10 @@ public class ManagePageController {
     @RequestMapping("/doUpdateCart")
     public String doUpdateCart(){
         return "managePage/cartUpdate";
+    }
+
+    @RequestMapping("/{workPage}")
+    public String workPage(@PathVariable String workPage){
+        return "managePage/"+workPage;
     }
 }

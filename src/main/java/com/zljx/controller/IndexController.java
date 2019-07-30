@@ -12,15 +12,11 @@ public class IndexController {
         return html;
     }
 
-    @RequestMapping("/index")
+    @RequestMapping("/")
     public String index(){
         return "index";
     }
 
-    @RequestMapping("/about")
-    public String about(){
-        return "about";
-    }
    /* @RequestMapping("Test01")
     public String index01(){
         return "join";

@@ -4,7 +4,6 @@ public class Admin {
     private Integer id;
     private String username;
     private String password;
-    private String sessionId;
 
     public String getUsername() {
         return username;
@@ -22,14 +21,6 @@ public class Admin {
         this.password = password;
     }
 
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -37,4 +28,5 @@ public class Admin {
     public void setId(Integer id) {
         this.id = id;
     }
+
 }

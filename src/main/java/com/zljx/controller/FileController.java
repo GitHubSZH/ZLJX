@@ -1,12 +1,7 @@
 package com.zljx.controller;
 
-import com.qiniu.common.QiniuException;
-import com.zljx.vo.HttpClientService;
 import com.zljx.vo.PicUploadResult;
 import com.zljx.vo.QiniuCloudUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,23 +9,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 @RestController
-@PropertySource("classpath:/properties/image.properties")
 public class FileController {
 
-    @Autowired
-    private HttpClientService httpClientService;
-
-    @Value("${image.dirPath}")
-    private String dirPath;
-    @Value("${image.urlPath}")
-    private String urlPath;
 
 
     //判断是否是第一次加载
@@ -82,12 +66,15 @@ public class FileController {
                try {
                    //使用base64方式上传到七牛云
                    String url = qiniuUtil.put64image(bytes, imageName);
+                   //把返回图片连接加个 "/" 使得可以访问图片路径
+                   StringBuffer stringBuffer = new StringBuffer(url);
+                   int cn = "image.zljx1027.cn".length();
+                   StringBuffer newUrl = stringBuffer.insert(cn, "/");
+
                    result.setCode(0);
                    result.setMsg("文件上传成功");
-                   //去除后面的"?号" http://psmddsfe1.bkt.clouddn.com/05f706c7d54d4bb18b8bdef8c5de0ccc?imageView2/0/q/75|imageslim
-                   int i = url.lastIndexOf("?");
-                   String newUrl = url.substring(0, i);
-                   result.setData("http://"+newUrl);
+                   System.out.println(newUrl);
+                   result.setData("http://"+newUrl.substring(0, newUrl.lastIndexOf("?")));
                    return result;
                } catch (Exception e) {
                    e.printStackTrace();
@@ -113,12 +100,7 @@ public class FileController {
             result.setCode(0);
             result.setMsg("移除图片成功");
             return result;
-        } catch (QiniuException e) {
-            e.printStackTrace();
-            result.setCode(1);
-            result.setMsg("该图片已经不存在了！");
-            return result;
-        }catch (Exception e){
+        }   catch (Exception e){
             e.printStackTrace();
             result.setCode(1);
             result.setMsg("移除图片失败");

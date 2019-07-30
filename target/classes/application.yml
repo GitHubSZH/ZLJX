@@ -1,5 +1,5 @@
 server:
-  port: 8080 #表示定义单点登录端口
+  port: 80
   servlet:
     context-path: /  #该配置可以删除,默认配置就是" / "
 spring:
@@ -7,20 +7,41 @@ spring:
     #引入druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/jtdb?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1:3306/zljx_db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
     username: root
     password: root
+    #ZLJX@20161027
   mvc:
     view:
       prefix: /
       suffix: .html
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+  #redis:
+   # sentinel:
+      #master: mymaster
+    #  nodes: 106.52.88.123:7001,106.52.88.123:7002,106.52.88.123:7003
+
+
 
 #配置mybatis-plus
 mybatis-plus:
-  type-aliases-package: com.jt.sso.pojo
-  mapper-locations: classpath:/mybatis/mappers/*.xml
+  type-aliases-package: com.zljx.pojo
+  mapper-locations: classpath:/mappers/*.xml
   #开启驼峰映射
   configuration:
-   map-underscore-to-camel-case: true
-  
-  
+    map-underscore-to-camel-case: true
+
+#配置分页插件pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+#logging:
+#  level:
+    #        tk.mybatis: DEBUG
+ #   com.zljx: DEBUG
