@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+
+
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../about/about.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/cartAndWorkDesc.css">
+   <!-- <style type="text/css">
+        .picDesc{
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        #workName{
+            padding: 10px 0 20px;
+            font-size: 20px;
+            color: #FFA800;
+            line-height: 1.4;
+            text-align: center
+        }
+        .article {
+            line-height: 2;
+            padding-bottom: 20px;
+            font-family: "microsoft YaHei UI" !important;
+            text-align: center;
+            font-size:15px;
+        }
+        .relink {
+            padding: 0 20px;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #ddd;
+        }
+    </style>-->
+</head>
+<body>
+    <div class="active tab-pane" id="tab3">
+
+    </div>
+<!--    <div class="col-md-9 info-content tab-content" style="width: 100%;">-->
+       <!-- <div class="active tab-pane" id="theNext">
+            <span id="pre" style="cursor:pointer;">上一页</span>
+            <span id="next" style="float: right;cursor:pointer;">下一页</span>
+        </div>-->
+        <div class="relink">
+            <span id="pre"></span>
+            <span id="next" style="float: right;"></span>
+        </div>
+   <!-- </div>-->
+</body>
+
+
+
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/stopImg.js"></script>
+<script src="../../js/jqPaginator.min.js" type="text/javascript"></script>
+<script src="../../js/main.js"></script>
+<script>
+     $(function () {
+         console.log(workdata);
+         var param ={"imageId":workdata};
+         workDesc(param);
+     });
+
+    function workDesc(param) {
+        //根据cartId 查询吊车详情
+        $.getJSON("/web/WorkOne",param,function (result) {
+            if (result.code == 0) {
+                var data = result.data;
+                var picPicture =(data.picture).split(",");
+                $("#tab3").append('<h3>合作案例</h3>');
+                for(var j = 0,len = picPicture.length; j < len; j++){
+                    $("#tab3").append('<div class="picDesc"><img src="' + picPicture[j] + '" title="'+data.workName+'" style="width:400px;height:375px;" class="img-thumbnail"  ></div>')
+                }
+                $("#tab3").append('<h1 id="workName">'+data.workName +'</h1>');
+                $("#tab3").append('<div class="article">'+data.workDesc +'</div>');
+
+                var PreParam = {"id":data.id,"type":""};
+                console.log(PreParam);
+                $.getJSON("/web/Pre",PreParam,function(PreResult){
+                    console.log(PreResult);
+                    if (PreResult.code == 0) {
+                        if(PreResult.data!=null){
+                            var Predata = PreResult.data;
+                            $("#pre").append('<b>上一篇：</b>'+'<a href="javascipt:void(0);;" onclick="PreCart('+Predata.id+')";return false;>'+Predata.workName+'</a>');
+                        }else{
+                            $("#pre").append('<b>上一篇：</b>'+'<a href="javascipt:void(0);;">没有了</a>');
+                        }
+                    }
+                });
+                $.getJSON("/web/Next",PreParam,function(NextResult){
+                    console.log(NextResult);
+                    if (NextResult.code == 0) {
+                        if(NextResult.data!=null){
+                            var nextData = NextResult.data;
+                            $("#next").append('<b>下一篇：</b>'+'<a href="javascipt:void(0);" onclick="NextCart('+nextData.id+')";return false;>'+nextData.workName+'</a>');
+                        }else{
+                            $("#next").append('<b>下一篇：</b>'+'<a href="javascipt:void(0);">没有了</a>');
+                        }
+                    }
+                });
+            }else{
+                alert(result.msg);
+            }
+        })
+    }
+
+    /* 上一页 */
+    function PreCart(preId) {
+        gundong();
+        clearUPAndDown();
+        var preParam = {"imageId":preId};
+        workDesc(preParam);
+    }
+
+    /* 下一页 */
+    function NextCart(nextId) {
+        gundong();
+        clearUPAndDown();
+        var nextParam = {"imageId":nextId};
+        workDesc(nextParam);
+    }
+
+    /*清楚 append 之前剩下的*/
+    function clearUPAndDown() {
+        $("#tab3").html("");
+        $("#pre").html("");
+        $("#next").html("");
+    }
+</script>
+</body>
+</html>

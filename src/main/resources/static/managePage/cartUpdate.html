@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style type="text/css">
+        .gcs-radio {
+
+            display: none;
+
+        }
+        #close{
+            float: right;
+        }
+        .gcs-radio+label {
+
+            width: 20px;
+
+            height: 20px;
+
+            line-height: 20px;
+
+            display: inline-block;
+
+            text-align: center;
+
+            vertical-align: bottom;
+
+            border: 1px solid gray;
+
+            border-radius: 50%;
+
+        }
+
+        .gcs-radio+label:hover {
+
+            border: 1px solid #2783FB;
+
+            cursor: pointer;
+
+        }
+
+        .gcs-radio:checked+label {
+
+            background: #2783FB;
+
+            border: 1px solid #2783FB;
+
+        }
+
+        .gcs-radio:checked+label:after {
+
+            content: "\2022";
+
+            font-size: 35px;
+
+            color: white;
+
+        }
+      /* #add_form{
+           margin: 10px;
+        }*/
+        .layui-form-item{
+            margin: 10px;
+        }
+    </style>
+<body class="layui-layout-body">
+<form class="layui-form" method="post" id="add_form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">吊车名称</label>
+        <div class="layui-input-block">
+            <input type="text" id="cartName" name="title" lay-verify="title" autocomplete="off" placeholder="请输入吊车名称" class="layui-input p_name">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">吊车大小(吨位)</label>
+        <div class="layui-input-block">
+            <input type="text" id="size" name="title" lay-verify="title" autocomplete="off" placeholder="请输入吊车大小单位为吨" class="layui-input cartSize">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label p_type">吊车类型</label>
+        <div style="padding-top: 5px">
+
+            <input type="radio" name="cartType" class="gcs-radio" value="汽车吊" id="汽车吊" />汽车吊
+            <label for="汽车吊"></label>
+            &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="cartType" class="gcs-radio" value="随车吊" id="随车吊" />随车吊
+            <label for="随车吊"></label>
+
+        </div>
+    </div>
+
+
+    <!--<label class="layui-form-label">图片路径</label>
+    <div class="layui-upload">
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品价格" class="layui-input p_url">
+        </div>
+    </div>-->
+    <div class="layui-form-item">
+                <label class="layui-form-label">吊车图片上传</label>
+              <div class="layui-upload">
+        <button type="button" class="layui-btn layui-btn-normal" id="testList">图片上传</button>
+        <button type="button" class="layui-btn layui-btn-danger">[选中好图片请点击开始上传]双击图片及为删除</button>
+        <div class="layui-upload-list">
+            <table class="layui-table">
+                <thead>
+                <tr><th>文件名</th>
+                    <th>大小</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr></thead>
+                <tbody id="demoList"></tbody>
+            </table>
+        </div>
+        <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+            预览图：
+            <div class="layui-upload-list" id="demo2"></div>
+        </blockquote>
+            </div>
+
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">吊车描述</label>
+        <div class="layui-input-block">
+            <textarea  id="desc"  placeholder="请输入内容" class="layui-textarea p_description"></textarea>
+        </div>
+    </div>
+
+    <div ></div><button type="button" class="layui-btn layui-btn-primary layui-btn-lg" id="p_update">确认修改</button>
+    <button type="button" class="layui-btn layui-btn-primary layui-btn-lg" id="close">取消</button>
+</form>
+</body>
+</html>
+<script type="text/javascript">
+    var picArr = new Array();
+    $(function(){
+        Array.prototype.indexOf = function(val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+        Array.prototype.remove = function(val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+
+        $.getJSON("/manage/findCartOne/"+cartId,function(result){
+            console.log(result);
+            if (result.code == 0) {
+                var datas = result.data;
+                $("#cartName").val(datas.cartName)
+                var cartNameType = datas.cartType;
+                $("input[name='cartType'][value="+cartNameType+"]").attr("checked",true);
+                $(".cartSize").val(datas.cartSize);
+                $("#desc").val(datas.cartDesc);
+                var pic = datas.picture;
+                if(pic){
+                    var picSplit = pic.split(",");
+                    for(var j = 0,len = picSplit.length; j < len; j++){
+                        picArr.push(picSplit[j]);
+                        var index = j;
+                        $('#demo2').append('<img src="'+picSplit[j]+'" id="remove_' + index + '" height="92px" width="92px" class="layui-upload-img uploadImgPreView">');
+                        console.log(picArr);
+                        $('#remove_' + index).bind('dblclick', function () {//双击删除指定预上传图片
+                            var src = document.getElementById('remove_' + index).src;
+                            //删除预览图片的
+                            picArr.remove(src)
+                            console.log(picArr);
+                            $(this).remove('#remove_' + index);
+                            //删除指定图片 ///delete/{pickey}
+                            $.post("delete/?pickey="+src,function(result){
+                                if (result.code == 0) {
+                                    layer.msg(result.msg);
+                                } else {
+                                    layer.msg(result.msg+"联系管理员");
+                                }
+                            });
+                        })
+                    }
+                }
+            } else {
+                alert(result.msg);
+            }
+        });
+
+
+        //文件队列
+
+        layui.use(['upload','layer'],function() {
+            var upload = layui.upload;
+            var layer=layui.layer;
+
+            //多文件列表示例
+            var demoListView = $('#demoList')
+                ,uploadListIns = upload.render({
+                elem: '#testList'
+                ,url: '/upload'
+                ,accept: 'file'
+                ,multiple: true
+                ,field:'files'
+                ,auto: false
+                ,bindAction: '#testListAction'
+                ,choose: function(obj){
+                    var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                    //读取本地文件
+                    obj.preview(function(index, file, result){
+                        var tr = $(['<tr id="upload-'+ index +'">'
+                            ,'<td>'+ file.name +'</td>'
+                            ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                            ,'<td>等待上传</td>'
+                            ,'<td>'
+                            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                            ,'</td>'
+                            ,'</tr>'].join(''));
+
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function(){
+                            obj.upload(index, file);
+                        });
+
+                        //删除
+                        tr.find('.demo-delete').on('click', function(){
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
+
+                        demoListView.append(tr);
+                    });
+                }
+                ,done: function(res, index, upload){
+                    console.log(res);
+                    if(res.code == 0){ //上传成功
+                        let replaceSrc =  res.data.replace("com","com/");
+                        picArr.push(replaceSrc);
+                        console.log(picArr);
+                        var tr = demoListView.find('tr#upload-'+ index)
+                            ,tds = tr.children();
+                        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                        tds.eq(3).html(''); //清空操作
+                        $('#demo2').append('<img id="remove_' + index + '" height="92px" width="92px" class="layui-upload-img uploadImgPreView">');
+                        $('#remove_'+index).attr('src', replaceSrc);
+                        $('#remove_' + index).bind('dblclick', function () {//双击删除指定预上传图片
+                            var src = document.getElementById('remove_' + index).src;
+                            //删除预览图片的
+                            console.log('"'+src+'"');
+                            var  a = src;
+                            picArr.remove(src)
+                            console.log(picArr);
+                            $(this).remove('#remove_' + index);
+                            //删除指定图片 ///delete/{pickey}
+                            $.post("delete/?pickey="+src,function(result){
+                                if (result.code == 0) {
+                                    layer.msg(result.msg);
+                                } else {
+                                    layer.msg(result.msg+"联系管理员");
+                                }
+                            });
+                        })
+                        return delete this.files[index]; //删除文件队列已经上传成功的文件
+                    }
+                    this.error(index, upload);
+                }
+                ,error: function(index, upload){
+                    var tr = demoListView.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(2).html('<span style="color: #FF5722;">上传失败,该文件不是图片</span>');
+                    tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                }
+            });
+
+        });
+
+        $("#p_update").click(function(){
+            if(isNaN($(".cartSize").val())){
+                alert("吊车大小(吨位)请输入数字");
+                return false;
+            }
+            $(".cartSize").val()
+            var params={
+                id:cartId,
+                cartName : $("#cartName").val()
+                ,cartType : $("input[type='radio']:checked").val()
+                ,cartSize :$(".cartSize").val()
+                ,picture: picArr.toString()
+                , cartDesc :$("#desc").val()
+            }
+            $.post("/manage/UpdateCart",params,function(result){
+                if (result.code == 0) {
+                    alert(result.msg);
+                    $(".layui-body").load("/manage/doCartManage");
+                } else {
+                    alert(result.msg);
+                }
+            });
+        });
+
+
+        $("#close").click(function(){
+            $(".layui-body").load("/manage/doCartManage");
+        })
+
+    });
+
+
+
+
+
+
+</script>
+</html>

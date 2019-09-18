@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../about/about.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/cart.css">
+   <!-- <style type="text/css">
+        .pic{
+            width: 210px;
+            height: 178px;
+            display: block;
+            float: left;
+            position:relative;
+            cursor:pointer;
+        }
+       .pic span{
+          display: block;
+           position:absolute;
+           left: 76px;
+       }
+        .pageBorder{
+            width: 400px;
+        }
+        #pageInfo{
+
+        }
+    </style>-->
+</head>
+<body>
+    <div class="active tab-pane" id="tab1">
+        <h3>汽车吊</h3>
+        <!--<img src="../../img/content_img1.png" class="content_img img-responsive center-block" alt="">-->
+        <!--<a href="#"><img src="../../img/content_img1.png" width="100px" height="50px" class="img-thumbnail"></a>-->
+    </div>
+    <!--  <div class="tab-pane" id="tab3">
+          <h3>企业愿景</h3>
+
+      </div>-->
+    <form id="form1" runat="server">
+        <div class="pageBorder">
+            <div id="pageInfo">
+                <ul class="pagination" id="pagination">
+                </ul>
+                <input type="hidden" id="PageCount" runat="server" />
+                <input type="hidden" id="PageSize" runat="server" value="8" />
+                <input type="hidden" id="countindex" runat="server" value="10"/>
+                <!--设置最多显示的页码数 可以手动设置 默认为7-->
+                <input type="hidden" id="visiblePages" runat="server" value="3  " />
+            </div>
+        </div>
+    </form>
+</body>
+
+
+
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/myPage.js" type="text/javascript"></script>
+<script src="../../js/stopImg.js"></script>
+<script src="../../js/jqPaginator.min.js" type="text/javascript"></script>
+<script src="../../js/main.js"></script>
+
+<script>
+    $(function(){
+    })
+    function loadData(num) {
+        var i = 0;
+        i++;
+        if(i>0){
+            $("#tab1").html("");
+            $("#tab1").append('<h3>汽车吊</h3>');
+        }
+        $.ajaxSettings.async = false;
+        var param ={"cartType":"汽车吊","page":num};
+        $.getJSON("/web/CartList",param,function (result) {
+            console.log(result.data);
+            if (result.code == 0) {
+                $("#PageCount").val(result.count);
+                var datas = result.data;
+                $.each(datas, function(i,value){
+                    let picture = (value.picture).split(",");
+                    $("#tab1").append('<span class="pic"><img src="' + picture[0] + '" title="'+value.cartName+'" onclick="CartImageDESC('+value.id+')" id=' + value.id + '  style="width:200px;height:158px;" class="img-thumbnail"  >'+'<span>'+value.cartName +'</span></span>');
+                });
+            } else {
+                alert(result.msg);
+            }
+        })
+    }
+
+
+
+</script>
+</body>
+</html>

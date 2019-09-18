@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+
+    <style type="text/css">
+        .demoTable{
+            margin: 20px;
+        }
+        /*.laytable-cell-1-photo{
+                 height:100px;
+            line-height: 100%;
+           } */
+
+        .layui-table-cell{
+            height:85px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="demoTable">
+    搜索名称：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+    </div>
+    <button type="button" class="layui-btn" data-type="reload">搜索</button>
+</div>
+
+<div class="btn-DU" style="float: right; margin-top: 10px;">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" id="del">删除</a>
+</div>
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">编辑</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">添加</button>
+    </div>
+</script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    var cartId = 0;
+    layui.use('table', function(){
+        var table = layui.table;
+
+        var tableIns =  table.render({
+            elem: '#demo'
+            ,toolbar: '#toolbarDemo'
+            ,url:'/manage/findCartAll'
+            ,title: '商品数据表'
+            ,limit:5//要传向后台的每页显示条数
+            //,page:true(自带的这个要注掉)
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']//自定义分页布局
+                ,limits:[5,10,20]
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+            }
+            /*,request: {
+            pageName: 'page' //页码的参数名称，默认：page
+            ,limitName: 'nums' //每页数据量的参数名，默认：limit
+          }*/
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field: 'id', title: '车辆id', width: 80, sort: true}
+                ,{field: 'cartType', title: '车辆类型', width: 100}
+                ,{field: 'cartName', title: '车辆名称', width: 150}
+                ,{field: 'cartSize', title: '车辆大小', width: 100}
+                /* ,{field: 'photo', title: '图片', align: "left",width: 140,height:85,sort: false,
+                     templet:function (d) { return '<div><img src=img\\'+d.url+'></div>'}
+                 }*/
+                , {
+                    field: 'picture', title: '车辆图片', align: 'center',  templet:'#imgAlbum'
+                }
+                ,{field: 'cartDesc', title: '车辆描述', width: 200}
+                ,{field: 'created', title: '创建时间', width: 170}
+                ,{field: 'updated', title: '修改时间',width: 170}
+            ]]
+            //	,data:params
+            //,skin: 'line' //表格风格
+            //,even: true
+            ,id: 'testReload'
+        });
+        //监听表格复选框选择
+        var array=[];//new Array();
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            console.log(obj);
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    console.log(data);
+                    /*//json字符串
+                    var objs = JSON.stringify(data)
+                    //json字符串转换为json对象
+                    var jsonobj = JSON.parse(objs)*/
+                    $.each(data,function(key, value){
+                        array.push(value.id);
+                    })
+                    console.log(array);
+                    //删除操作
+                    if(array.length==0){
+                        layer.msg("请先选择");
+                        return;
+                    }
+                    if(confirm('真的删除选中行么')){
+                        var params={"ids":array.toString()};//1,2,3,4
+                        //3.2构建请求的url
+                        var url="/manage";
+                        //3.3提交异步请求
+                        $.post(url,params,function(result){
+                            if(result.code==0){
+                                alert(result.msg);
+                              //$(".layui-body").load("/manage/doCartManage");
+                                tableIns.reload({page:{
+                                        curr: deleteAllJumpPage(checkStatus)
+                                    }});
+                            }else{
+                                alert(result.msg);
+                            }
+                        });
+                    }else{
+                        //清空数组
+                        array.splice(0,array.length);
+                        return;
+                    }
+                    //清空数组
+                    array.splice(0,array.length);
+                    break;
+                case 'getCheckLength':
+                    var datas = checkStatus.data;
+                    if(datas.length==0){
+                        layer.msg("请选择");
+                        return;
+                    }
+                    if(datas.length!=1){
+                        layer.msg("只能单条编辑");
+                        return;
+                    }
+                    console.log(datas);
+
+                    $.each(datas,function(key, value){
+                        cartId = value.id;
+                    })
+                    $(".layui-body").load("/manage/doUpdateCart");
+                    //先存放在浏览器缓存中，然后再拿出来
+                    break;
+                case 'isAll':
+                    //layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    var datas = checkStatus.data;
+                    if(datas.length!=0){
+                        layer.msg("请取消复选框的选择");
+                        return;
+                    }
+                    $(".layui-body").load("/manage/doCartAdd");
+                    break;
+            };
+        });
+
+
+        /*   var $ = layui.$, active = {
+                  reload: function(){
+                    var demoReload = $('#demoReload');
+
+                    //执行重载
+                    table.reload('testReload', {
+                      page: {
+                        curr: 2 //重新从第 1 页开始
+                      }
+                      ,where: {
+
+                            pName:$("#demoReload").val()
+
+                      }
+                    });
+                  }
+                };
+
+                $('.demoTable .layui-btn').on('click', function(){
+                  var type = $(this).data('type');
+                  active[type] ? active[type].call(this) : '';
+                }); */
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var demoReload = $('#demoReload');
+
+                //执行重载
+                table.reload('testReload', {
+
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    },
+                    url: '/manage/findCartAll'
+                    ,where: {
+                        limit:5
+                        ,pName:$("#demoReload").val()
+                    }
+                });
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+    });
+    function deleteAllJumpPage(checkStatus){
+        var curr = $(".layui-laypage-curr em:eq(1)").text();
+        if(checkStatus.isAll){
+            curr = curr== 1  ? curr : curr-1;
+        }
+        return curr;
+    }
+
+</script>
+<script id="imgAlbum" type="text/html">
+
+    <div>
+        {{#  if(d.picture.length>0){ layui.each(d.picture.split(","), function(index, item){  }}
+        <img src="{{ item }}" style="height:80px">
+        {{# }); } else { }}
+          暂无
+        {{#  } }}
+    </div>
+</script>
+</body>
+</html>

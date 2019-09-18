@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        .talk_con{
+            width:600px;
+            height:500px;
+            border:1px solid #666;
+            margin:50px auto 0;
+            background:#f9f9f9;
+        }
+        .talk_show{
+            width:580px;
+            height:420px;
+            border:1px solid #666;
+            background:#fff;
+            margin:10px auto 0;
+            overflow:auto;
+        }
+        .talk_input{
+            width:580px;
+            margin:10px auto 0;
+        }
+        .whotalk{
+            width:80px;
+            height:30px;
+            float:left;
+            outline:none;
+        }
+        .talk_word{
+            width:420px;
+            height:26px;
+            padding:0px;
+            float:left;
+            margin-left:10px;
+            outline:none;
+            text-indent:10px;
+        }        
+        .talk_sub{
+            width:56px;
+            height:30px;
+            float:left;
+            margin-left:10px;
+        }
+        .atalk{
+           margin:10px; 
+        }
+        .atalk span{
+            display:inline-block;
+            background:#0181cc;
+            border-radius:10px;
+            color:#fff;
+            padding:5px 10px;
+        }
+        .btalk{
+            margin:10px;
+            text-align:right;
+        }
+        .btalk span{
+            display:inline-block;
+            background:#ef8201;
+            border-radius:10px;
+            color:#fff;
+            padding:5px 10px;
+        }
+    </style>
+    <script src="../../js/jquery.min.js"></script>
+    <script type="text/javascript">      
+    // 
+        window.onload = function(){
+            var Words = document.getElementById("words");
+            var Who = document.getElementById("who");
+            var TalkWords = document.getElementById("talkwords");
+            var TalkSub = document.getElementById("talksub");
+
+            connction();
+
+            
+        }
+    $(function () {
+
+        loadOption();
+
+        $("body").keydown(function(){
+            if(event.keyCode == "13"){
+                //回车发送消息
+                sendMessageAdmin();
+            }
+        })
+
+    });
+
+
+
+
+
+        function connction() {
+            var Words = document.getElementById("words");
+            if ('WebSocket' in window){
+                //ws = new WebSocket("ws://www.niezhiliang.com:8086/socketServer/niezhiliang9595");
+                ws = new WebSocket("ws://www.zljx1027.cn:80/socketServer/lau");
+            }
+            else if ('MozWebSocket' in window){
+                //ws = new MozWebSocket("ws://www.niezhiliang.com:8086/socketServer/niezhiliang9595");
+                ws = new MozWebSocket("ws://www.zljx1027.cn:80/socketServer/lau");
+            }
+            else{
+                alert("该浏览器不支持websocket");
+            }
+            ws.onmessage = function (evt) {
+                str = '<div class="atalk"><span>' + evt.data + '</span></div>';
+                Words.innerHTML =   Words.innerHTML + str;
+            };
+
+            ws.onclose = function(evt) {
+                loadOption();
+                console.log('服务端连接关闭')
+            };
+
+            ws.onopen = function(evt) {
+                console.log('服务端连接成功')
+            };
+        }
+    connction();
+
+
+    var options = [];
+    function loadOption() {
+        var load = 0;
+        load++;
+        if(load>0){
+            $("#who").html("");
+        }
+        $.ajaxSettings.async = false;
+        $.getJSON("/manage/getUsersList",function (data) {
+            console.log(data)
+            var users = data.users;
+            for (var i = 0; i < users.length; i++) {
+                var sel = document.getElementById("who");
+                var option = new Option(users[i], users[i]);
+                sel.options.add(option);
+            }
+
+        });
+    }
+
+
+    //回车发送消息 服务端
+    function sendMessageAdmin() {
+        var TalkWords = document.getElementById("talkwords");
+        var Words = document.getElementById("words");
+        //定义空字符串
+        var str = "";
+        if(TalkWords.value == ""){
+            // 消息为空时弹窗
+            alert("消息不能为空");
+            return;
+        }else {
+            $.ajax({
+                method: 'get',
+                url: '/manage/sendmsg',
+                data: {
+                    "username": $('#who').val(),
+                    "msg": TalkWords.value
+                },
+                success:function(data) {
+                    console.log(data);
+                    str = '<div class="btalk"><span>我说 :' + TalkWords.value +'</span></div>' ;
+                    Words.innerHTML = Words.innerHTML + str;
+                    TalkWords.value = "";
+                }
+            })
+        }
+        loadOption();
+    }
+
+
+    </script>
+
+</head>
+<body>
+    <div class="talk_con">
+        <div class="talk_show" id="words">
+            <div class="atalk"><span id="asay"></span></div>
+            <div class="btalk"><span id="bsay"></span></div>
+        </div>
+        <div class="talk_input">
+            <select class="whotalk" id="who">
+                <!--<option value="0">A说：</option>
+                <option value="1">B说：</option>-->
+            </select>
+            <input type="text" class="talk_word" id="talkwords">
+            <input type="button" value="发送" class="talk_sub" id="talksub" onclick="sendMessageAdmin()">
+        </div>
+    </div>
+</body>
+</html>

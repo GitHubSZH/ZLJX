@@ -41,7 +41,7 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
-#logging:
-#  level:
+logging:
+  level:
     #        tk.mybatis: DEBUG
- #   com.zljx: DEBUG
+    com.zljx: DEBUG

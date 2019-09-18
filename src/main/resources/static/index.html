@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>众力机械</title>
+    <meta name="keywords" content="吊车 租赁 随车吊 台班 吊车租赁" />
+    <meta name="description" content="长沙吊车出租 , 吊车 , 随车吊租赁 , 服务优质 , 专业起重吊装租赁服务公司 , 服务保障 , 吊车台班" />
+    <meta name="author" content="fyus"/>
+    <meta name="robots" content="all"/>
+
+    <link rel="shortcut icon" href="../../img/favicon2.ico" type="image/x-icon">
+    <link rel="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../about/about.css">
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../css/kefu.css">
+
+   <!-- <style type="text/css">
+        .pic{
+            width: 210px;
+            height: 178px;
+            display: block;
+            float: left;
+            position:relative;
+            cursor:pointer;
+        }
+       .pic span{
+          display: block;
+           position:absolute;
+           left: 76px;
+       }
+/*        .pageBorder{
+            width: 400px;
+        }
+        #pageInfo{
+
+        }*/
+        .side-contact .head {
+            height: 50px;
+            line-height: 50px;
+            background: #013f83;
+            color: #FFF;
+            border-radius: 5px 5px 0 0;
+        }
+        .side-contact .head h2 {
+            font-size: 20px;
+            font-weight: normal;
+            /* margin: 0 0 0 20px; */
+            padding-top: 15px;
+            text-align: center;
+        }
+        .side-contact .main {
+            border: 1px solid #ddd;
+            border-top: 0;
+            padding: 10px 20px 20px;
+        }
+    </style>-->
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/page/index" class="navbar-brand logo"style="
+    text-align: center;
+    line-height: 50px;
+    font-size: 25px;
+    color: #53119559;
+" >
+                <span>众力机械</span>
+            </a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#example-navbar-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/page/index" class="glyphicon glyphicon-home"> 首页</a></li>
+                <li ><a href="/page/info" class="glyphicon glyphicon-list"> 关于众力</a></li>
+                <!--<li ><a href="/page/info" class="glyphicon glyphicon-fire">关于众力</a></li>
+                <li><a href="join.html" class="glyphicon glyphicon-question-sign"> 加入我们</a></li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--轮播-->
+<div id="myCarousel"  class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+    </ol>
+    <!-- 轮播（Carousel）项目 -->
+    <div class="carousel-inner">
+        <div class="item active" style="background: #94929721">
+            <img src="../../img/lunbo/1.jpg" width="960px" height="240px" alt="First slide">
+        </div>
+        <div class="item" style="background: #94929721">
+            <img src="../../img/lunbo/2.jpg" width="960px" height="240px" alt="Second slide">
+        </div>
+</div>
+    <!-- 轮播（Carousel）导航 -->
+    <a href="#myCarousel" data-slide="prev" class="carousel-control left">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a href="#myCarousel" data-slide="next" class="carousel-control right">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+</div>
+<!--内容-->
+<div class="content" style="margin-top: 60px">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-3 hidden-sm hidden-xs" >
+                <ul class="list-group group_name">
+                    <li class="active"><a class="list-group-item" onclick="loadQicheDiao()"   data-toggle="tab" >1.汽车吊</a></li>
+                    <li ><a class="list-group-item" data-toggle="tab" onclick="loadSuicheDiao()"  >2.随车吊</a></li><!--href="/page/truckCart" href="#tab1"-->
+                    <li ><a class="list-group-item " onclick="work()" data-toggle="tab">3.合作案例</a></li>
+                </ul>
+                <div class="side-contact" style="width: 266px;">
+
+                    <div class="head">
+                        <h2>联系我们</h2>
+                    </div>
+                    <div class="main">
+                        <h4>长沙市众力机械设备租赁</h4>
+
+                        联系人：于四泉<br>
+                        电话：13308459503<br>
+                        地址：湖南省浏阳市永安镇芦塘村车田片于家组
+                    </div>
+                </div>
+            </div>
+
+            <div class=" hidden-md hidden-lg" >
+                <ul class="nav nav-tabs nav_solid" >
+                    <li class="active "><a class="list-group-item " onclick="loadQicheDiao()"  data-toggle="tab">1.吊车</a></li>
+                    <li><a class="list-group-item" onclick="loadSuicheDiao()" data-toggle="tab">2.随车吊</a></li>
+                    <li ><a class="list-group-item " onclick="work()"  data-toggle="tab">3.合作案例</a></li>
+                </ul>
+            </div>
+            <div class="col-md-9 info-content tab-content" id="cartListBody">
+                    <div class="active tab-pane" id="tab1">
+                        <!--<h3>汽车吊</h3>-->
+                    </div>
+            </div>
+            </div>
+        </div>
+
+    <!--在线客服  -->
+    <div class="scrollsidebar" id="scrollsidebar" style="top: 520px;">
+        <div class="side_content">
+            <div class="side_list">
+                <div class="side_title"><a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+                <div class="side_center">
+                    <div class="other">
+                        <p><img src="../../img/123.jpg" width="120"/></p>
+                        <p>(以上是微信二维码)</p>
+                        <p>众力机械吊车租赁</p>
+                        <p>联系电话：13308459503</p>
+                    </div>
+                    <div class="msgserver" style="margin-top: 12px;">
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1643617173&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1643617173:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
+                    </div>
+                </div>
+                <div class="side_bottom"></div>
+            </div>
+        </div>
+        <div class="show_btn"><span>在线客服</span></div>
+    </div>
+
+
+
+<div class="content_2">
+    <div class="container">
+        <div class="row content_Div">
+            <div class="col-md-6 col-sm-6 content_img">
+                <img src="../../img/content_2.png" name="img_2" class="content_DivImg content_2Img img-responsive center-block" alt="">
+            </div>
+            <div class="content_text col-md-6 col-sm-6 tab2-text">
+                <h3>长沙众力机械租赁有限公司</h3>
+                <p style="padding-bottom: 40px"><strong>长沙众力机械设备租赁有限公司</strong>公司主要经营重型吊车、随车吊等工程机械设备的租赁。公司现拥有20T、25T、35T、50T等各型吊装设备。在长期的起重吊装工作中积累了丰富的工作经验，每次工程的安全率高，在市场上信誉度更高。公司始终坚持“安全保障，信誉至上”的宗旨，恪守质量</p>
+                <div class="btn-group btn-group-justified">
+                    <a href="/page/info" class="btn btn-primary">查看详情</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+<!--脚-->
+<footer class="footer">
+        <div class="row" style="padding-top: 10px">
+            <p>版权所有:长沙众力机械设备租赁有限公司 于总:13308459503</p>
+            <p></p>
+            <p>地址:湖南省浏阳市永安镇芦塘村车田片于家组</p>
+    </div>
+    </div>
+</footer>
+
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/stopImg.js"></script>
+<script src="../../js/jqPaginator.min.js" type="text/javascript"></script>
+<script src="../../js/main.js"></script>
+<script type="text/javascript" src="../../js/kefu.js"></script>
+<script>
+    $(function(){
+        $("#cartListBody").load("/page/qichediao");
+        $('#myCarousel').carousel({
+            interval: 4000,//自动播放4s
+        });
+    })
+
+    //传递到详情页面的id
+    var adata;
+    var workdata;
+    function CartImageDESC(imageId) {
+        //$("#cartListBody").load("/page/cartDesc",{"adata":imageId});
+        //alert(imageId);
+        adata = imageId;
+        $("#cartListBody").load("/page/cartDesc");
+    }
+    function WorkImageDESC(imageId) {
+        //$("#cartListBody").load("/page/cartDesc",{"adata":imageId});
+        //alert(imageId);
+        workdata = imageId;
+        $("#cartListBody").load("/page/workDesc");
+    }
+
+    function loadSuicheDiao() {
+        $("#cartListBody").load("/page/suichediao");
+    }
+    function loadQicheDiao() {
+        $("#cartListBody").load("/page/qichediao");
+    }
+
+    function work() {
+        $("#cartListBody").load("/page/work");
+    }
+
+    //滚动效果
+    function gundong() {
+        window.scrollTo(500,500);
+    }
+
+</script>
+</body>
+</html>

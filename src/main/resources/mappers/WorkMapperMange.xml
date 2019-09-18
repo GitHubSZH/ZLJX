@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zljx.mapper.CartMapperMange">
+
+    <select id="findAll" resultType="com.zljx.pojo.Cart">
+    select id, cart_name, cart_type, cart_size, picture, cart_desc, created, updated from cart
+    <where>
+        <choose>
+            <when test="pName != null and pName.trim() != ''">
+                LOCATE(#{pName},`cart_name`)>0
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+
+    </where>
+    order by id desc
+</select>
+
+
+
+
+
+
+    <insert id="insertCart" parameterType="com.zljx.pojo.Cart">
+        INSERT INTO cart (cart_name, cart_type, cart_size, picture, cart_desc, created, updated)
+        VALUES (#{cartName}, #{cartType}, #{cartSize}, #{picture}, #{cartDesc}, #{created}, #{updated})
+</insert>
+        <select id="findMAXId" resultType="map">
+            select MAX(id) as id FROM cart where cart_type=#{cartType}
+        </select>
+
+
+    <!--<select id="selectListOK"  resultType="list">
+        select *  FROM cart where
+        id  in
+        (
+        <foreach collection="ids" separator=","
+                 item="id">
+            #{id}
+        </foreach>
+        )
+    </select>-->
+
+</mapper>

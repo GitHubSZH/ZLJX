@@ -1,0 +1,5 @@
+.pic{width:210px;height:178px;display:block;float:left;position:relative;cursor:pointer}
+.pic span{display:block;text-align: center;}
+.side-contact .head{height:50px;line-height:50px;background:#013f83;color:#FFF;border-radius:5px 5px 0 0}
+.side-contact .head h2{font-size:20px;font-weight:normal;padding-top:15px;text-align:center}
+.side-contact .main{border:1px solid #ddd;border-top:0;padding:10px 20px 20px}
