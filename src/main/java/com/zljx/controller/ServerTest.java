@@ -1,10 +1,10 @@
 package com.zljx.controller;
 
-import com.zljx.pojo.Work;
+import com.zljx.mapper.CartMapperMange;
+import com.zljx.mapper.WorkMapperManage;
 import com.zljx.vo.HttpClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,15 +15,24 @@ import java.util.Map;
 
 
 /**
- * @Author: sunzhihan
+ * @Author: sunzhihan   这是之前帮别人 插入的数据  医院的数据接口！！！
  * @Date：2019/08/20 14:42
  * @Version 1.0
  **/
 @RestController
-public class Test01 {
+public class ServerTest {
 
     @Autowired
     private  HttpClientService httpClientService;
+
+    @Autowired
+    private CartMapperMange cartMapperMange;
+
+    @Autowired
+    private WorkMapperManage workMapperManage;
+
+    @Autowired
+    private ServerTest serverTest;
 
 
     @RequestMapping("/skr")
@@ -33,7 +42,7 @@ public class Test01 {
 
         List<Map<String, Object>> bh = UserReadExcelImpl.Bh();
         System.out.println(bh.size());
-      /*  for (Map list :    bh) {
+       /* for (Map list :    bh) {
             String no = (String)list.get("skill_mrNo");
             String name = (String)list.get("skill_pName");
             String date111 = (String)list.get("skill_operDate");
@@ -44,7 +53,7 @@ public class Test01 {
 
             //System.out.println(no+":"+name+":"+date);
 
-           *//* Map<String,String> params = new HashMap();
+            Map<String,String> params = new HashMap();
             params.put("formFileName","SkillRegistry");
             params.put("schDeptFlow","39efc14b4e4f4fe183dd36c4aeb2594f");
             params.put("roleFlag","doctor");
@@ -60,11 +69,10 @@ public class Test01 {
             params.put("skill_result_name","是");
 
            String s = httpClientService.doPost("http://hb.ezhupei.com/pdsci/res/rec/saveRegistryForm",params);
-            System.out.println(name+s);*//*
-        }*/
+            System.out.println(name+s);
+        }
 
-        System.out.println("数据添加成功！");
+        System.out.println("数据添加成功！");*/
         return "success";
     }
-
 }

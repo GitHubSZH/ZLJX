@@ -216,21 +216,21 @@
                         $('#demo2').append('<img id="remove_' + index + '" height="92px" width="92px" class="layui-upload-img uploadImgPreView">');
                         $('#remove_'+index).attr('src', replaceSrc);
                         $('#remove_' + index).bind('dblclick', function () {//双击删除指定预上传图片
-                            var src = document.getElementById('remove_' + index).src;
+                            var Prcid = $(this).attr("id");
+                            var src = document.getElementById(Prcid).src;
                             //删除预览图片的
-                            console.log('"'+src+'"');
-                            var  a = src;
                             picArr.remove(src)
                             console.log(picArr);
-                            $(this).remove('#remove_' + index);
-                            //删除指定图片 ///delete/{pickey}
-                            $.post("delete/?pickey="+src,function(result){
+                            $(this).remove('#'+Prcid);
+                            //删除指定图片 ///delete/{pickey} 暂时先不需要。
+                            layer.msg('移除成功！');
+                            /*$.post("delete/?pickey="+src,function(result){
                                 if (result.code == 0) {
                                     layer.msg(result.msg);
                                 } else {
                                     layer.msg(result.msg+"联系管理员");
                                 }
-                            });
+                            });*/
                         })
                         return delete this.files[index]; //删除文件队列已经上传成功的文件
                     }

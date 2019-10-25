@@ -12,6 +12,10 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Http请求工具
@@ -79,5 +83,31 @@ public class HttpUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        String json = "{\"List\":[{\"AGE\":24,\"C_NAME\":\"培优\",\"NAME\":\"Jack\",\"T_NAME\":\"张雪峰\"},{\"AGE\":24,\"C_NAME\":\"就业\",\"NAME\":\"Jack\",\"T_NAME\":\"王海涛\"}]}";
+        Map map = ObjectMapperUtil.toObejct(json, Map.class);
+        List list = (List)map.get("List");
+        Map result = new HashMap();
+
+        List cName = new ArrayList();
+        List TName = new ArrayList();
+
+        for (int i=0;i<list.size();i++){
+
+            Map o = (Map)list.get(i);
+
+            result.put("AGE",o.get("AGE"));
+            result.put("NAME",o.get("NAME"));
+            cName.add(o.get("C_NAME"));
+            TName.add(o.get("T_NAME"));
+
+        }
+
+        result.put("C_NAME",cName);
+        result.put("T_NAME",TName);
+
+        System.out.println(result);
     }
 }

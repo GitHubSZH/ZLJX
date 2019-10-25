@@ -125,7 +125,6 @@ public class HttpClientService {
     	//1.定义请求类型
     	HttpPost post = new HttpPost(url);
     	post.setConfig(requestConfig); //定义链接时长
-		post.addHeader("Cookie", "JSESSIONID=B065B968142216FCE6F907024152A658K0mZi0");
     	try {
 	    	//2.参数封装
 	    	if(params != null){
